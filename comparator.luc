@@ -1,0 +1,21 @@
+module comparator (
+    input io_dip[3][8],
+    input vin,
+    input zin,
+    input nin,
+    //3 inputs for the different v and z and n inputs.
+    //io_dip used to obtain alufn1 and alufn2 inputs
+    //again, remember that io_dip[2][7] = alufn1 io_dip[2][6] = alufn2
+    output comparisonresult
+    // = looks at z, requires alufn1=1 alufn2=0
+    // < looks at n xor v, requires alufn1=0 alufn2=1
+    //<= looks at z or (n xor v) requires alufn1=1 alufn2=0
+    
+    //the resultant is (alufn1 AND z) OR ((n xor v) AND alufn2)
+  ) {
+
+  always {
+  comparisonresult = (io_dip[2][7] & zin) | ((nin ^ vin) & io_dip[2][6]);
+    
+  }
+}
