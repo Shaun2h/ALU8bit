@@ -2,20 +2,37 @@ module totaladder (
     input clk,  // clock
     input rst,  // reset
     input io_dip[3][8],
-    input alufn0[1],
+    //In the interest of human reading, switch 8 which is rightmost will be lowest bit.
+    // and hence, switch 1 will be most significant bit.
+    //alufn0 is going to be io_dip[2][7]
     output answer[8],
-    output Zout,
+    output zout,
     //when output is all zero
-    output Vout,
+    output vout,
     //when output overflows
-    output Nout
+    output nout
     //when output is negative.
        //io_dip[1] = First Value (8bit)
     //io_dip[2] = Second Value (8bit)
     //io_dip[3] = Selector, look only at 0-4.
   ) {
-  adder(.binaryone(io_dip[1][0]), .binarytwo( alufn0^io_dip[2][0]), .carryin(alufn0));
-  always {
+  adder firstbit(.binaryone(io_dip[1][7]), .binarytwo( io_dip[2][7]^io_dip[2][7]), .carryin(io_dip[2][7]));
+  //all adders for different bits. Least Significant bit uses ALUFN0 as carry in. 
+  // Note that XOR is applied to all second number inputs. This is to invert, and the one is added in first bit adder.
+  adder secondbit(.binaryone(io_dip[1][6]), .binarytwo( io_dip[2][7]^io_dip[2][6]), .carryin(firstbit.carryout));
+  adder thirdbit(.binaryone(io_dip[1][5]), .binarytwo( io_dip[2][7]^io_dip[2][5]), .carryin(secondbit.carryout));
+  adder fourthbit(.binaryone(io_dip[1][4]), .binarytwo( io_dip[2][7]^io_dip[2][4]), .carryin(thirdbit.carryout));
+  adder fifthbit(.binaryone(io_dip[1][3]), .binarytwo( io_dip[2][7]^io_dip[2][3]), .carryin(fourthbit.carryout));
+  adder sixthbit(.binaryone(io_dip[1][2]), .binarytwo( io_dip[2][7]^io_dip[2][2]), .carryin(fifthbit.carryout));
+  adder seventhbit(.binaryone(io_dip[1][1]), .binarytwo( io_dip[2][7]^io_dip[2][1]), .carryin(sixthbit.carryout));
+  adder eigthbit(.binaryone(io_dip[1][0]), .binarytwo( io_dip[2][7]^io_dip[2][0]), .carryin(seventhbit.carryout));  
+  always {  
+    zout = ~(firstbit.sumout | secondbit.sumout | thirdbit.sumout | fourthbit.sumout | fifthbit.sumout | sixthbit.sumout | seventhbit.sumout | eigthbit.sumout);
+    //NOR all sumouts
+
+    vout = io_dip[0][0] & io_dip[1][0] & ~(eigthbit.sumout) | ~(io_dip[0][0]) & ~(io_dip[1][0]) & eigthbit.sumout ;
+    //Again, all io_dip numbering is changed to having switch 0 be most significant for human reading.
     
+    nout = eigthbit.sumout;
   }
 }
