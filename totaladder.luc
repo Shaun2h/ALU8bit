@@ -28,7 +28,7 @@ module totaladder (
     zout = ~(firstbit.sumout | secondbit.sumout | thirdbit.sumout | fourthbit.sumout | fifthbit.sumout | sixthbit.sumout | seventhbit.sumout | eigthbit.sumout);
     //NOR all sumouts
 
-    vout = io_dip[0][0] & io_dip[1][0] & ~(eigthbit.sumout) | ~(io_dip[0][0]) & ~(io_dip[1][0]) & eigthbit.sumout ;
+    vout = (io_dip[0][0] & io_dip[1][0] & ~(eigthbit.sumout)) | (~(io_dip[0][0]) & ~(io_dip[1][0]) & eigthbit.sumout) ;
     //Again, all io_dip numbering is changed to having switch 0 be most significant for human reading.
     
     nout = eigthbit.sumout;
@@ -39,6 +39,6 @@ module totaladder (
     answer[3] = fifthbit.sumout;
     answer[2] = sixthbit.sumout;
     answer[1] = seventhbit.sumout;
-    answer[0] = eigthbit.sumout
+    answer[0] = eigthbit.sumout;
   }
 }
