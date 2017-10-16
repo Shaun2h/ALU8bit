@@ -30,8 +30,11 @@ module totaladder (
 
     vout = (io_dip[0][0] & io_dip[1][0] & ~(eigthbit.sumout)) | (~(io_dip[0][0]) & ~(io_dip[1][0]) & eigthbit.sumout) ;
     //Again, all io_dip numbering is changed to having switch 0 be most significant for human reading.
+    //condition is checked by looking at most significant bit, and seeing if a change has occurred. a change would indicate overflow.
     
     nout = eigthbit.sumout;
+    //to see if negative, look purely at the first bit. all inputs are signed anyway.
+    
     answer[7] = firstbit.sumout;
     answer[6] = secondbit.sumout;
     answer[5] = thirdbit.sumout;
@@ -40,5 +43,6 @@ module totaladder (
     answer[2] = sixthbit.sumout;
     answer[1] = seventhbit.sumout;
     answer[0] = eigthbit.sumout;
+    //assign the 8bit answer out.
   }
 }
