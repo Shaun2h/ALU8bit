@@ -1,0 +1,31 @@
+module boolean (
+    input io_dip[3][8],
+    //all inputs MUST be taken to compare all 8 bits accordingly.
+    output out[8]
+    //output is given as an 8 bit answer
+  ) {
+  //Again it is useful as a reminder to note that we are reading switches backwards to make it more convenient.
+  //so, io_dip[7:4] will read from alufn 0-3
+  
+  //AND operator = (XOR all alufn) AND (Bit and Bit)
+  //OR operator = [(alufn3 AND alufn2) AND (alufn0 XOR alufn1)] AND (bit or bit)
+  //XOR operator = ([~alufn3 AND alufn2] AND (alufn1 and ~alufn0 ) ) AND (bit XOR bit)
+  //"A" operator = (alufn3 AND ~alufn2) AND (alufn1 and ~alufn0)) 
+  //noteworthy that A operator actually refers to load register... so it is not typed out below. until i find out what it is.
+  // All of the operators will output a 0 if it is either
+  // a) not to be considered for the requested logical operator
+  // b) not going to output true
+  // so you can utilise them all without worrying about clashes.
+  // Additionally, each alu requirement is very specific.
+  // should a logical operation have never been requested, it will always output 0x{8}. Afterwhich, it is up to the alu to select the correct output (not this output if logical operation not requested)
+  always {
+  out[0] = (((io_dip[2][4]^io_dip[2][5]^io_dip[2][6]^io_dip[2][7]) & (io_dip[0][7] & io_dip[1][7]))) | ((io_dip[2][4] & io_dip[2][5]) & (io_dip[2][6] & ~io_dip[2][7])) & (io_dip[0][7] & io_dip[1][7]) | (((~io_dip[2][4] & io_dip[2][5]) & (io_dip[2][6] & ~io_dip[2][7]))&(io_dip[0][7] ^ io_dip[1][7]));
+  out[1] = (((io_dip[2][4]^io_dip[2][5]^io_dip[2][6]^io_dip[2][7]) & (io_dip[0][6] & io_dip[1][6]))) | ((io_dip[2][4] & io_dip[2][5]) & (io_dip[2][6] & ~io_dip[2][7])) & (io_dip[0][6] & io_dip[1][6]) | (((~io_dip[2][4] & io_dip[2][5]) & (io_dip[2][6] & ~io_dip[2][7]))&(io_dip[0][6] ^ io_dip[1][6]));
+  out[2] = (((io_dip[2][4]^io_dip[2][5]^io_dip[2][6]^io_dip[2][7]) & (io_dip[0][5] & io_dip[1][5]))) | ((io_dip[2][4] & io_dip[2][5]) & (io_dip[2][6] & ~io_dip[2][7])) & (io_dip[0][5] & io_dip[1][5]) | (((~io_dip[2][4] & io_dip[2][5]) & (io_dip[2][6] & ~io_dip[2][7]))&(io_dip[0][5] ^ io_dip[1][5]));
+  out[3] = (((io_dip[2][4]^io_dip[2][5]^io_dip[2][6]^io_dip[2][7]) & (io_dip[0][4] & io_dip[1][4]))) | ((io_dip[2][4] & io_dip[2][5]) & (io_dip[2][6] & ~io_dip[2][7])) & (io_dip[0][4] & io_dip[1][4]) | (((~io_dip[2][4] & io_dip[2][5]) & (io_dip[2][6] & ~io_dip[2][7]))&(io_dip[0][4] ^ io_dip[1][4]));
+  out[4] = (((io_dip[2][4]^io_dip[2][5]^io_dip[2][6]^io_dip[2][7]) & (io_dip[0][3] & io_dip[1][3]))) | ((io_dip[2][4] & io_dip[2][5]) & (io_dip[2][6] & ~io_dip[2][7])) & (io_dip[0][3] & io_dip[1][3]) | (((~io_dip[2][4] & io_dip[2][5]) & (io_dip[2][6] & ~io_dip[2][7]))&(io_dip[0][3] ^ io_dip[1][3]));
+  out[5] = (((io_dip[2][4]^io_dip[2][5]^io_dip[2][6]^io_dip[2][7]) & (io_dip[0][2] & io_dip[1][2]))) | ((io_dip[2][4] & io_dip[2][5]) & (io_dip[2][6] & ~io_dip[2][7])) & (io_dip[0][2] & io_dip[1][2]) | (((~io_dip[2][4] & io_dip[2][5]) & (io_dip[2][6] & ~io_dip[2][7]))&(io_dip[0][2] ^ io_dip[1][2]));
+  out[6] = (((io_dip[2][4]^io_dip[2][5]^io_dip[2][6]^io_dip[2][7]) & (io_dip[0][1] & io_dip[1][1]))) | ((io_dip[2][4] & io_dip[2][5]) & (io_dip[2][6] & ~io_dip[2][7])) & (io_dip[0][1] & io_dip[1][1]) | (((~io_dip[2][4] & io_dip[2][5]) & (io_dip[2][6] & ~io_dip[2][7]))&(io_dip[0][1] ^ io_dip[1][1]));
+  out[7] = (((io_dip[2][4]^io_dip[2][5]^io_dip[2][6]^io_dip[2][7]) & (io_dip[0][0] & io_dip[1][0]))) | ((io_dip[2][4] & io_dip[2][5]) & (io_dip[2][6] & ~io_dip[2][7])) & (io_dip[0][0] & io_dip[1][0]) | (((~io_dip[2][4] & io_dip[2][5]) & (io_dip[2][6] & ~io_dip[2][7]))&(io_dip[0][0] ^ io_dip[1][0]));
+  }
+}
