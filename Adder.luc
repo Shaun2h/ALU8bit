@@ -1,10 +1,16 @@
-module Adder (
+module adder (
     input clk,  // clock
     input rst,  // reset
-    output out
-  ) {
+    input binaryone,
+    input binarytwo,
+    input carryin,
+    output carryout,
+    output sumout
+    )
+   {
 
   always {
-    out = 0;
+    carryout = (binaryone ^ binarytwo) & carryin + binaryone & binarytwo ;
+    sumout = (binaryone ^ binarytwo) ^carryin;
   }
 }
