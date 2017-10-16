@@ -1,0 +1,21 @@
+module totaladder (
+    input clk,  // clock
+    input rst,  // reset
+    input io_dip[3][8],
+    input alufn0[1],
+    output answer[8],
+    output Zout,
+    //when output is all zero
+    output Vout,
+    //when output overflows
+    output Nout
+    //when output is negative.
+       //io_dip[1] = First Value (8bit)
+    //io_dip[2] = Second Value (8bit)
+    //io_dip[3] = Selector, look only at 0-4.
+  ) {
+  adder(.binaryone(io_dip[1][0]), .binarytwo( alufn0^io_dip[2][0]), .carryin(alufn0));
+  always {
+    
+  }
+}
