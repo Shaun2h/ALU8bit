@@ -1,6 +1,4 @@
 module totaladder (
-    input clk,  // clock
-    input rst,  // reset
     input io_dip[3][8],
     //In the interest of human reading, switch 8 which is rightmost will be lowest bit.
     // and hence, switch 1 will be most significant bit.
