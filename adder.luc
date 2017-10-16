@@ -10,7 +10,7 @@ module adder (
    {
 
   always {
-    carryout = (binaryone ^ binarytwo) & carryin + binaryone & binarytwo ;
+    carryout = (binaryone ^ binarytwo) & carryin | binaryone & binarytwo ;
     sumout = (binaryone ^ binarytwo) ^carryin;
   }
 }
