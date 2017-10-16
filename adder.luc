@@ -1,6 +1,4 @@
 module adder (
-    input clk,  // clock
-    input rst,  // reset
     input binaryone[1],
     //first binary input (1 bit)
     input binarytwo[1],
