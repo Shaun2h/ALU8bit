@@ -34,5 +34,13 @@ module totaladder (
     //Again, all io_dip numbering is changed to having switch 0 be most significant for human reading.
     
     nout = eigthbit.sumout;
+    answer[7] = firstbit.sumout;
+    answer[6] = secondbit.sumout;
+    answer[5] = thirdbit.sumout;
+    answer[4] = fourthbit.sumout;
+    answer[3] = fifthbit.sumout;
+    answer[2] = sixthbit.sumout;
+    answer[1] = seventhbit.sumout;
+    answer[0] = eigthbit.sumout
   }
 }
