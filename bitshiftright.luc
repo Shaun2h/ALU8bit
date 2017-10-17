@@ -6,7 +6,7 @@ module bitshiftright (
   always {
   out = 00000000;
       if(io_dip[1][2:0] == d0){
-      out = io_dip[0]<<0;
+      out = io_dip[0];
     }
     if(io_dip[1][2:0] == d1){
     out = io_dip[0]<<1;
