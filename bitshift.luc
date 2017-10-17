@@ -15,11 +15,15 @@ module bitshift (
     bitshiftleft shiftleft(.io_dip(io_dip));
   
     always {
+    out = 8x{0};
+    //out is placed higher up here because lower statements have priority.
+    //therefore, we can conclude that this module outputs 00000000 if there is no valid configuration request.
     if(io_dip[2][7] && io_dip[2][8] == 1){
-
+    out = signright.out;
     }
     if(io_dip[2][7] ==0){
-    
+        if(io_dip[2][8] ==1){out = shiftright.out;}
+        if(io_dip[2][8] ==0){out = shiftleft.out;}
     }
   }
 }
