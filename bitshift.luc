@@ -3,7 +3,7 @@ module bitshift (
     output out
   ) {
 //daily reminder that io_dip is read backwards for the numbers.
-  //B[3:0] instead of B[4:0] like the lab, because max shift is only 7 bits 
+  //B[2:0] instead of B[4:0] like the lab, because max shift is only 7 bits so use up to 3 bits to represent
   // all inputs can be taken from switches as usual.
   //io_dip[2] = ALUFN
   // io_dip[1] = input B
