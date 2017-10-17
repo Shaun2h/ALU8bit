@@ -1,8 +1,8 @@
 module totaladder (
-    input io_dip[3][8],
+    input in[3][8],
     //In the interest of human reading, switch 8 which is rightmost will be lowest bit.
     // and hence, switch 1 will be most significant bit.
-    //alufn0 is going to be io_dip[2][7]
+    //alufn0 is going to be in[2][7]
     output answer[8],
     output zout,
     //when output is all zero
@@ -10,26 +10,59 @@ module totaladder (
     //when output overflows
     output nout
     //when output is negative.
-       //io_dip[1] = First Value (8bit)
-    //io_dip[2] = Second Value (8bit)
-    //io_dip[3] = Selector, look only at 0-4.
+       //in[1] = First Value (8bit)
+    //in[2] = Second Value (8bit)
+    //in[3] = Selector, look only at 0-4.
   ) {
-  adder firstbit(.binaryone(io_dip[1][7]), .binarytwo( io_dip[2][7]^io_dip[2][7]), .carryin(io_dip[2][7]));
+  adder firstbit;
   //all adders for different bits. Least Significant bit uses ALUFN0 as carry in. 
   // Note that XOR is applied to all second number inputs. This is to invert, and the one is added in first bit adder.
-  adder secondbit(.binaryone(io_dip[1][6]), .binarytwo( io_dip[2][7]^io_dip[2][6]), .carryin(firstbit.carryout));
-  adder thirdbit(.binaryone(io_dip[1][5]), .binarytwo( io_dip[2][7]^io_dip[2][5]), .carryin(secondbit.carryout));
-  adder fourthbit(.binaryone(io_dip[1][4]), .binarytwo( io_dip[2][7]^io_dip[2][4]), .carryin(thirdbit.carryout));
-  adder fifthbit(.binaryone(io_dip[1][3]), .binarytwo( io_dip[2][7]^io_dip[2][3]), .carryin(fourthbit.carryout));
-  adder sixthbit(.binaryone(io_dip[1][2]), .binarytwo( io_dip[2][7]^io_dip[2][2]), .carryin(fifthbit.carryout));
-  adder seventhbit(.binaryone(io_dip[1][1]), .binarytwo( io_dip[2][7]^io_dip[2][1]), .carryin(sixthbit.carryout));
-  adder eigthbit(.binaryone(io_dip[1][0]), .binarytwo( io_dip[2][7]^io_dip[2][0]), .carryin(seventhbit.carryout));  
+  adder secondbit;
+  adder thirdbit;
+  adder fourthbit;
+  adder fifthbit;
+  adder sixthbit;
+  adder seventhbit;
+  adder eigthbit;  
   always {  
+  
+    firstbit.binaryone = in[1][7];
+    firstbit.binarytwo = in[2][7]^in[2][7];
+    firstbit.carryin = in[2][7];
+    
+    secondbit.binaryone = in[1][6];
+    secondbit.binarytwo = in[2][6]^in[2][6];
+    secondbit.carryin = in[2][6];
+    
+    thirdbit.binaryone = in[1][5];
+    thirdbit.binarytwo = in[2][5]^in[2][5];
+    thirdbit.carryin = in[2][5];
+    
+    fourthbit.binaryone = in[1][4];
+    fourthbit.binarytwo = in[2][4]^in[2][4];
+    fourthbit.carryin = in[2][4];
+    
+    fifthbit.binaryone = in[1][3];
+    fifthbit.binarytwo = in[2][3]^in[2][3];
+    fifthbit.carryin = in[2][3];
+    
+    sixthbit.binaryone = in[1][2];
+    sixthbit.binarytwo = in[2][2]^in[2][2];
+    sixthbit.carryin = in[2][2];
+    
+    seventhbit.binaryone = in[1][1];
+    seventhbit.binarytwo = in[2][1]^in[2][1];
+    seventhbit.carryin = in[2][1];
+    
+    eigthbit.binaryone = in[1][0];
+    eigthbit.binarytwo = in[2][0]^in[2][0];
+    eigthbit.carryin = in[2][0];
+    
     zout = ~(firstbit.sumout | secondbit.sumout | thirdbit.sumout | fourthbit.sumout | fifthbit.sumout | sixthbit.sumout | seventhbit.sumout | eigthbit.sumout);
     //NOR all sumouts
 
-    vout = (io_dip[0][0] & io_dip[1][0] & ~(eigthbit.sumout)) | (~(io_dip[0][0]) & ~(io_dip[1][0]) & eigthbit.sumout) ;
-    //Again, all io_dip numbering is changed to having switch 0 be most significant for human reading.
+    vout = (in[0][0] & in[1][0] & ~(eigthbit.sumout)) | (~(in[0][0]) & ~(in[1][0]) & eigthbit.sumout) ;
+    //Again, all in numbering is changed to having switch 0 be most significant for human reading.
     //condition is checked by looking at most significant bit, and seeing if a change has occurred. a change would indicate overflow.
     
     nout = eigthbit.sumout;
