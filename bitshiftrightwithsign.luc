@@ -3,89 +3,31 @@ module bitshiftrightwithsign (
     output out[8]
   ) {
 
-  always {
+    always {
   out = 00000000;
       if(io_dip[1][2:0] == d0){
-    out[7] = io_dip[0][7];
-    out[6] = io_dip[0][6];
-    out[5] = io_dip[0][5];
-    out[4] = io_dip[0][4];
-    out[3] = io_dip[0][3];
-    out[2] = io_dip[0][2];
-    out[1] = io_dip[0][1];
-    out[0] = io_dip[0][0];      
+      out = io_dip[0]<<<0;
     }
     if(io_dip[1][2:0] == d1){
-    out[7] = io_dip[0][6];
-    out[6] = io_dip[0][5];
-    out[5] = io_dip[0][4];
-    out[4] = io_dip[0][3];
-    out[3] = io_dip[0][2];
-    out[2] = io_dip[0][1];
-    out[1] = io_dip[0][0];
-    out[0] = io_dip[0][0];
-      }
+    out = io_dip[0]<<<1;
+    }
     if(io_dip[1][2:0] == d2){
-    out[7] = io_dip[0][5];
-    out[6] = io_dip[0][4];
-    out[5] = io_dip[0][3];
-    out[4] = io_dip[0][2];
-    out[3] = io_dip[0][1];
-    out[2] = io_dip[0][0];
-    out[1] = io_dip[0][0];
-    out[0] = io_dip[0][0];
+    out = io_dip[0]<<<2;
       }
     if(io_dip[1][2:0] == d3){
-    out[7] = io_dip[0][4];
-    out[6] = io_dip[0][3];
-    out[5] = io_dip[0][2];
-    out[4] = io_dip[0][1];
-    out[3] = io_dip[0][0];
-    out[2] = io_dip[0][0];
-    out[1] = io_dip[0][0];
-    out[0] = io_dip[0][0];
+    out = io_dip[0]<<<3;
       }
     if(io_dip[1][2:0] == d4){
-    out[7] = io_dip[0][3];
-    out[6] = io_dip[0][2];
-    out[5] = io_dip[0][1];
-    out[4] = io_dip[0][0];
-    out[3] = io_dip[0][0];
-    out[2] = io_dip[0][0];
-    out[1] = io_dip[0][0];
-    out[0] = io_dip[0][0];
+    out = io_dip[0]<<<4;
       }
     if(io_dip[1][2:0] == d5){
-    out[7] = io_dip[0][2];
-    out[6] = io_dip[0][1];
-    out[5] = io_dip[0][0];
-    out[4] = io_dip[0][0];
-    out[3] = io_dip[0][0];
-    out[2] = io_dip[0][0];
-    out[1] = io_dip[0][0];
-    out[0] = io_dip[0][0];
+    out = io_dip[0]<<<5;
       }
     if(io_dip[1][2:0] == d6){
-    out[7] = io_dip[0][1];
-    out[6] = io_dip[0][0];
-    out[5] = io_dip[0][0];
-    out[4] = io_dip[0][0];
-    out[3] = io_dip[0][0];
-    out[2] = io_dip[0][0];
-    out[1] = io_dip[0][0];
-    out[0] = io_dip[0][0];
+    out = io_dip[0]<<<6;
       }
     if(io_dip[1][2:0] == d7){
-    out[7] = io_dip[0][0];
-    out[6] = io_dip[0][0];
-    out[5] = io_dip[0][0];
-    out[4] = io_dip[0][0];
-    out[3] = io_dip[0][0];
-    out[2] = io_dip[0][0];
-    out[1] = io_dip[0][0];
-    out[0] = io_dip[0][0];
+    out = io_dip[0]<<<7;
       }
   }
 }
-
-    
