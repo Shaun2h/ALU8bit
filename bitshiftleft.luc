@@ -7,6 +7,16 @@ module bitshiftleft (
   always {
   out =00000000;
     //again just placed to prevent error during complile. Lower statements take priority.
+    if(io_dip[1][2:0] == d0){
+    out[7] = io_dip[0][7];
+    out[6] = io_dip[0][6];
+    out[5] = io_dip[0][5];
+    out[4] = io_dip[0][4];
+    out[3] = io_dip[0][3];
+    out[2] = io_dip[0][2];
+    out[1] = io_dip[0][1];
+    out[0] = io_dip[0][0];      
+    }
     if(io_dip[1][2:0] == d1){
     out[7] = io_dip[0][6];
     out[6] = io_dip[0][5];
