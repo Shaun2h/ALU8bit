@@ -1,0 +1,25 @@
+module bitshift (
+    input io_dip[3][8],
+    output out
+  ) {
+//daily reminder that io_dip is read backwards for the numbers.
+  //B[3:0] instead of B[4:0] like the lab, because max shift is only 7 bits 
+  // all inputs can be taken from switches as usual.
+  //io_dip[2] = ALUFN
+  // io_dip[1] = input B
+  //io_dip[0] = input A
+  //this module will not output anything if there is no valid alufn0 and alufn1 combination (alufn1 = 1 alufn0=0)
+  //this is a selector module.
+    bitshiftrightwithsign signright(.io_dip(io_dip));
+    bitshiftright shiftright(.io_dip(io_dip));
+    bitshiftleft shiftleft(.io_dip(io_dip));
+  
+    always {
+    if(io_dip[2][7] && io_dip[2][8] == 1){
+
+    }
+    if(io_dip[2][7] ==0){
+    
+    }
+  }
+}
