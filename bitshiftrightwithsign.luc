@@ -1,0 +1,9 @@
+module bitshiftrightwithsign (
+    input io_dip[3][8],
+    output out
+  ) {
+
+  always {
+    out = 0;
+  }
+}
