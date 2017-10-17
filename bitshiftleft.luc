@@ -8,28 +8,28 @@ module bitshiftleft (
   out =00000000;
     //again just placed to prevent error during complile. Lower statements take priority.
     if(io_dip[1][2:0] == d0){
-    out = io_dip[0] 
+    out = io_dip[0];
     }
     if(io_dip[1][2:0] == d1){
-    out = io_dip[0]>>1
+    out = io_dip[0]>>1;
       }
     if(io_dip[1][2:0] == d2){
-    out = io_dip[0]>>2
+    out = io_dip[0]>>2;
     }
     if(io_dip[1][2:0] == d3){
-    out = io_dip[0]>>3
+    out = io_dip[0]>>3;
     }
     if(io_dip[1][2:0] == d4){
-    out = io_dip[0]>>4
+    out = io_dip[0]>>4;
     }
     if(io_dip[1][2:0] == d5){
-    out = io_dip[0]>>5
+    out = io_dip[0]>>5;
       }
     if(io_dip[1][2:0] == d6){
-    out = io_dip[0]>>6
+    out = io_dip[0]>>6;
       }
     if(io_dip[1][2:0] == d7){
-    out = io_dip[0]>>7
+    out = io_dip[0]>>7;
     }
   }
 }
