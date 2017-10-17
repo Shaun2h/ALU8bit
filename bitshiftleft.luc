@@ -5,6 +5,8 @@ module bitshiftleft (
 //hardcode works best here instead of doing a general gate logic. I mean if you want to, go ahead though it would work better...
   //i don't have brain juice left to figure out gate logic.
   always {
+  out =00000000;
+    //again just placed to prevent error during complile. Lower statements take priority.
     if(io_dip[1][2:0] == d1){
     out[7] = io_dip[0][6];
     out[6] = io_dip[0][5];
