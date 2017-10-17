@@ -1,9 +1,79 @@
 module bitshiftleft (
     input io_dip[3][8],
-    output out
+    output out[8]
   ) {
-
+//hardcode works best here instead of doing a general gate logic. I mean if you want to, go ahead though it would work better...
+  //i don't have brain juice left to figure out gate logic.
   always {
-    out = 0;
+    if(io_dip[1][2:0] == d1){
+    out[7] = io_dip[0][6];
+    out[6] = io_dip[0][5];
+    out[5] = io_dip[0][4];
+    out[4] = io_dip[0][3];
+    out[3] = io_dip[0][2];
+    out[2] = io_dip[0][1];
+    out[1] = io_dip[0][0];
+    out[0] = 0;
+      }
+    if(io_dip[1][2:0] == d2){
+    out[7] = io_dip[0][5];
+    out[6] = io_dip[0][4];
+    out[5] = io_dip[0][3];
+    out[4] = io_dip[0][2];
+    out[3] = io_dip[0][1];
+    out[2] = io_dip[0][0];
+    out[1] = 0;
+    out[0] = 0;
+      }
+    if(io_dip[1][2:0] == d3){
+    out[7] = io_dip[0][4];
+    out[6] = io_dip[0][3];
+    out[5] = io_dip[0][2];
+    out[4] = io_dip[0][1];
+    out[3] = io_dip[0][0];
+    out[2] = 0;
+    out[1] = 0;
+    out[0] = 0;
+      }
+    if(io_dip[1][2:0] == d4){
+    out[7] = io_dip[0][3];
+    out[6] = io_dip[0][2];
+    out[5] = io_dip[0][1];
+    out[4] = io_dip[0][0];
+    out[3] = 0;
+    out[2] = 0;
+    out[1] = 0;
+    out[0] = 0;
+      }
+    if(io_dip[1][2:0] == d5){
+    out[7] = io_dip[0][2];
+    out[6] = io_dip[0][1];
+    out[5] = io_dip[0][0];
+    out[4] = 0;
+    out[3] = 0;
+    out[2] = 0;
+    out[1] = 0;
+    out[0] = 0;
+      }
+    if(io_dip[1][2:0] == d6){
+    out[7] = io_dip[0][1];
+    out[6] = io_dip[0][0];
+    out[5] = 0;
+    out[4] = 0;
+    out[3] = 0;
+    out[2] = 0;
+    out[1] = 0;
+    out[0] = 0;
+      }
+    if(io_dip[1][2:0] == d7){
+    out[7] = io_dip[0][0];
+    out[6] = 0;
+    out[5] = 0;
+    out[4] = 0;
+    out[3] = 0;
+    out[2] = 0;
+    out[1] = 0;
+    out[0] = 0;
+      }
   }
 }
