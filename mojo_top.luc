@@ -18,87 +18,66 @@ module mojo_top (
     input io_dip [3][8]     // DIP switches on IO Shield
   ) {
   
-  sig rst; 
+  sig rst;                  // reset signal
+
   
   .clk(clk) {
     // The reset conditioner is used to synchronize the reset signal to the FPGA
     // clock. This ensures the entire FPGA comes out of reset at the same time.
     reset_conditioner reset_cond;
-      
   }
-
-  const ADD = 6b000000;
-  const SUB = 6b000001;
-  const AND = 6b011000;
-  const OR = 6b011110;
-  const XOR = 6b010110;
-  const SAME = 6b011010;
-  const SHL = 6b100000;
-  const SHR = 6b100001;
-  const SRA = 6b100011;
-  const CMPEQ = 6b110011;
-  const CMPLT = 6b110101;
-  const CMPLE = 6b110111;
-  const MULT = 6b000010;
-  
-                   // reset signal
-  sig a[8];
-  sig b[8];
-  sig alufn[6];
-  
-  
-  totaladder adder(.in(io_dip));
-  boolean bool(.in(io_dip));
-  comparator comp(.io_dip(io_dip),.vin(adder.vout),.nin(adder.nout),.zin(adder.zout));
-  bitshift bs(.in(io_dip));
-  
-  
+  boolean boolme(.in(io_dip));
+  totaladder adderorsubtractor(.in(io_dip));
+  comparator comparer(.vin(adderorsubtractor.vout), .zin(adderorsubtractor.zout), .nin(adderorsubtractor.nout), .in(io_dip));
+  bitshift shiftbits(.in(io_dip));
+  //io_dip[2] = alufn
+  // io_dip[1] = first number
+  // io_dip [0] = second number
   always {
     reset_cond.in = ~rst_n; // input raw inverted reset signal
     rst = reset_cond.out;   // conditioned reset
     
-    led = 8h00;             // turn LEDs off
+    led = 8h00;             // turn LEDs off (all. Lower statements priority so appropriate output is shown)
     spi_miso = bz;          // not using SPI
     spi_channel = bzzzz;    // not using flags
     avr_rx = bz;            // not using serial port
     
     io_led = 3x{{8h00}};    // turn LEDs off
     io_seg = 8hff;          // turn segments off
-    io_sel = 4h3;           // select no digits
-    
-    a = io_dip[0];
-    b = io_dip[1];
-    alufn = io_dip[2];
-    
-    if(ADD==alufn){
-      io_led[2] = adder.answer;
-      io_led[0]= a;
-      io_led[1] = b;
-    } else if (SUB==alufn){
-      io_led[2] = adder.answer;
-      io_led[0]= a;
-       io_seg = 8h00;          // turn segments off
-    io_sel = 4h0; 
-      io_led[1] = b;
-    } else if (alufn == AND || alufn == OR || alufn == XOR || alufn == XOR || alufn == SAME){         
-      io_led[0]= a;
-      io_led[1] = b;
-      io_seg = 8h00;          // turn segments off
-    io_sel = 4h0; 
-      io_led[2] = bool.out;     
-  }  else if (alufn == SHL || alufn == SHR || alufn == SRA){                                          
-           io_led[2] = bs.out;
-      io_led[0]= a;
-      io_led[1] = b;
-  }
+    io_sel = 4hf;           // select no digits
     
     
-  else if (alufn == CMPEQ || alufn == CMPLE || alufn == CMPLT){                                       
-           io_led[2][0] = comp.comparisonresult;  
-      io_led[0]= a;
-      io_led[1] = b;   
-  }
+    case(io_dip[2][5:0]){
     
+    //IF ADDER, 000000 is input
+    6b000000: io_led[2] = adderorsubtractor.answer;
+    //IF SUBTRACTOR, 000001 is input
+    6b000001: io_led[2] = adderorsubtractor.answer;
+    //IF REQUESTED EQUAL 110011 is input
+    6b110011: io_led[2] = comparer.comparisonresult;
+    //IF REQUESTED LESSER THEN 110101 is input
+    6b110101:io_led[2] =comparer.comparisonresult;
+    //IF REQUESTED LESSER THEN OR EQUALS TO, THEN 110111 is input
+    6b110111:io_led[2] =comparer.comparisonresult;  
+    //IF use AND THEN 011000 is input
+    6b011000:io_led[2] =boolme.out;  
+    //IF use OR THEN 011110 is input
+    6b011110:io_led[2] =boolme.out;      
+    //IF use XOR THEN 010110 is input
+    6b010110:io_led[2] =boolme.out;            
+    //IF use SHL THEN 100000 is input
+    6b100000:io_led[2] =shiftbits.out;            
+    //IF use SHR THEN 100001 is input
+    6b100001:io_led[2] =shiftbits.out;            
+    //IF use SRA THEN 100011 is input
+    6b100011:io_led[2] =shiftbits.out;            
     
+    //DEFAULT is when it matches with no other statements above. So, alufn ERROR.
+    default:io_led[2] = 00000000;
+    
+    }
+    //If comparator, looks at alufn1 and 2 for inputs, but requires 110
+
+
   }
 }
