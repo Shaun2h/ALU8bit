@@ -30,6 +30,7 @@ module mojo_top (
   totaladder adderorsubtractor(.in(io_dip));
   comparator comparer(.vin(adderorsubtractor.vout), .zin(adderorsubtractor.zout), .nin(adderorsubtractor.nout), .in(io_dip));
   bitshift shiftbits(.in(io_dip));
+  //multiplier multiplime(.in(io_dip));
   //io_dip[2] = alufn
   // io_dip[1] = first number
   // io_dip [0] = second number
@@ -71,7 +72,8 @@ module mojo_top (
     6b100001:io_led[2] =shiftbits.out;            
     //IF use SRA THEN 100011 is input
     6b100011:io_led[2] =shiftbits.out;            
-    
+    //IF use multiplier THEN 001111
+    //6b001111: io_led[2] = multiplime.out;
     //DEFAULT is when it matches with no other statements above. So, alufn ERROR.
     default:io_led[2] = 00000000;
     
