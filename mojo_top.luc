@@ -18,16 +18,40 @@ module mojo_top (
     input io_dip [3][8]     // DIP switches on IO Shield
   ) {
   
-  sig rst;                  // reset signal
-  sig adder_res[8];
-  
-  totaladder adder(.in(io_dip));
+  sig rst; 
   
   .clk(clk) {
     // The reset conditioner is used to synchronize the reset signal to the FPGA
     // clock. This ensures the entire FPGA comes out of reset at the same time.
     reset_conditioner reset_cond;
+      
   }
+
+  const ADD = 6b000000;
+  const SUB = 6b000001;
+  const AND = 6b011000;
+  const OR = 6b011110;
+  const XOR = 6b010110;
+  const SAME = 6b011010;
+  const SHL = 6b100000;
+  const SHR = 6b100001;
+  const SRA = 6b100011;
+  const CMPEQ = 6b110011;
+  const CMPLT = 6b110101;
+  const CMPLE = 6b110111;
+  const MULT = 6b000010;
+  
+                   // reset signal
+  sig a[8];
+  sig b[8];
+  sig alufn[6];
+  
+  
+  totaladder adder(.in(io_dip));
+  boolean bool(.in(io_dip));
+  comparator comp(.io_dip(io_dip),.vin(adder.vout),.nin(adder.nout),.zin(adder.zout));
+  bitshift bs(.in(io_dip));
+  
   
   always {
     reset_cond.in = ~rst_n; // input raw inverted reset signal
@@ -40,9 +64,41 @@ module mojo_top (
     
     io_led = 3x{{8h00}};    // turn LEDs off
     io_seg = 8hff;          // turn segments off
-    io_sel = 4hf;           // select no digits
+    io_sel = 4h3;           // select no digits
     
-    adder_res = adder.answer;
+    a = io_dip[0];
+    b = io_dip[1];
+    alufn = io_dip[2];
+    
+    if(ADD==alufn){
+      io_led[2] = adder.answer;
+      io_led[0]= a;
+      io_led[1] = b;
+    } else if (SUB==alufn){
+      io_led[2] = adder.answer;
+      io_led[0]= a;
+       io_seg = 8h00;          // turn segments off
+    io_sel = 4h0; 
+      io_led[1] = b;
+    } else if (alufn == AND || alufn == OR || alufn == XOR || alufn == XOR || alufn == SAME){         
+      io_led[0]= a;
+      io_led[1] = b;
+      io_seg = 8h00;          // turn segments off
+    io_sel = 4h0; 
+      io_led[2] = bool.out;     
+  }  else if (alufn == SHL || alufn == SHR || alufn == SRA){                                          
+           io_led[2] = bs.out;
+      io_led[0]= a;
+      io_led[1] = b;
+  }
+    
+    
+  else if (alufn == CMPEQ || alufn == CMPLE || alufn == CMPLT){                                       
+           io_led[2][0] = comp.comparisonresult;  
+      io_led[0]= a;
+      io_led[1] = b;   
+  }
+    
     
   }
 }

@@ -9,7 +9,7 @@ module comparator (
     output comparisonresult
     // = looks at z, requires alufn1=1 alufn2=0
     // < looks at n xor v, requires alufn1=0 alufn2=1
-    //<= looks at z or (n xor v) requires alufn1=1 alufn2=0
+    //<= looks at z or (n xor v) requires alufn1=1 alufn2=1
     
     //the resultant is (alufn1 AND z) OR ((n xor v) AND alufn2)
   ) {
