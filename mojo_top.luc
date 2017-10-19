@@ -73,7 +73,7 @@ module mojo_top (
     //IF use SRA THEN 100011 is input
     6b100011:io_led[2] =shiftbits.out;            
     //IF use multiplier THEN 000010
-    6b000010: io_led[2] = multiplime.out;
+    6b000010: io_led[2] = multiplime.answer;
     //DEFAULT is when it matches with no other statements above. So, alufn ERROR.
     default:io_led[2] = 00000000;
     
