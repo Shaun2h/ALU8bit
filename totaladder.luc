@@ -25,10 +25,7 @@ module totaladder (
     zout = ~(firstbit.sumout | secondbit.sumout | thirdbit.sumout | fourthbit.sumout | fifthbit.sumout | sixthbit.sumout | seventhbit.sumout | eigthbit.sumout);
     //NOR all sumouts
 
-    vout = (in[0][0] & in[1][0] & ~(eigthbit.sumout)) | (~(in[0][0]) & ~(in[1][0]) & eigthbit.sumout) ;
-    //Again, all in numbering is changed to having switch 0 be most significant for human reading.
-    //condition is checked by looking at most significant bit, and seeing if a change has occurred. a change would indicate overflow.
-    
+    vout = (in[0][7] & in[1][7] & ~(eigthbit.sumout)) | (~(in[0][7]) & ~(in[1][7]) & eigthbit.sumout) ;
     nout = eigthbit.sumout;
     //to see if negative, look purely at the first bit. all inputs are signed anyway.
     
