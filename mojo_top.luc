@@ -17,23 +17,13 @@ module mojo_top (
     input io_button [5],    // 5 buttons on IO Shield
     input io_dip [3][8]     // DIP switches on IO Shield
   ) {
-  
+  alumod alu(.inne(io_dip));
   sig rst;                  // reset signal
-
-  
   .clk(clk) {
     // The reset conditioner is used to synchronize the reset signal to the FPGA
     // clock. This ensures the entire FPGA comes out of reset at the same time.
     reset_conditioner reset_cond;
   }
-  boolean boolme(.in(io_dip));
-  totaladder adderorsubtractor(.in(io_dip));
-  comparator comparer(.vin(adderorsubtractor.vout), .zin(adderorsubtractor.zout), .nin(adderorsubtractor.nout), .in(io_dip));
-  bitshift shiftbits(.in(io_dip));
-  multiplier multiplime(.in(io_dip));
-  //io_dip[2] = alufn
-  // io_dip[1] = first number
-  // io_dip [0] = second number
   always {
     reset_cond.in = ~rst_n; // input raw inverted reset signal
     rst = reset_cond.out;   // conditioned reset
@@ -47,38 +37,9 @@ module mojo_top (
     io_seg = 8hff;          // turn segments off
     io_sel = 4hf;           // select no digits
     
+    io_led[2] = alu.out;
     
-    case(io_dip[2][5:0]){
-    
-    //IF ADDER, 000000 is input
-    6b000000: io_led[2] = adderorsubtractor.answer;
-    //IF SUBTRACTOR, 000001 is input
-    6b000001: io_led[2] = adderorsubtractor.answer;
-    //IF REQUESTED EQUAL 110011 is input
-    6b110011: io_led[2] = comparer.comparisonresult;
-    //IF REQUESTED LESSER THEN 110101 is input
-    6b110101:io_led[2] =comparer.comparisonresult;
-    //IF REQUESTED LESSER THEN OR EQUALS TO, THEN 110111 is input
-    6b110111:io_led[2] =comparer.comparisonresult;  
-    //IF use AND THEN 011000 is input
-    6b011000:io_led[2] =boolme.out;  
-    //IF use OR THEN 011110 is input
-    6b011110:io_led[2] =boolme.out;      
-    //IF use XOR THEN 010110 is input
-    6b010110:io_led[2] =boolme.out;            
-    //IF use SHL THEN 100000 is input
-    6b100000:io_led[2] =shiftbits.out;            
-    //IF use SHR THEN 100001 is input
-    6b100001:io_led[2] =shiftbits.out;            
-    //IF use SRA THEN 100011 is input
-    6b100011:io_led[2] =shiftbits.out;            
-    //IF use multiplier THEN 000010
-    6b000010: io_led[2] = multiplime.answer;
-    //DEFAULT is when it matches with no other statements above. So, alufn ERROR.
-    default:io_led[2] = 00000000;
-    
-    }
-    //If comparator, looks at alufn1 and 2 for inputs, but requires 110
+
 
 
   }
